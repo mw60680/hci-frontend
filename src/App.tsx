@@ -9,6 +9,7 @@ import createTheme from './theme';
 
 const App: React.FC = () => {
   const theme = useTheme();
+
   return (
     <BrowserRouter>
       <Provider store={store}>
