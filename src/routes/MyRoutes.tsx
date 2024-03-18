@@ -104,6 +104,14 @@ const routesMap = [
         )
       }
     ]
+  },
+  {
+    path: '*',
+    element: (
+      <Layout>
+        <div>Page Not Found</div>
+      </Layout>
+    )
   }
 ];
 
