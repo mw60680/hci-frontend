@@ -38,7 +38,7 @@ const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => 
             isLoggedIn: true,
             user: userProfileRes,
             stage: 'AUTHENTICATED',
-            userId: userProfileRes?.id
+            userId: userProfileRes?.data?.id
           })
         );
       }

@@ -6,8 +6,9 @@ import typography from './typography';
 import breakpoints from './breakpoints';
 import components from './components';
 import shadows from './shadows';
+import { Theme } from '@emotion/react';
 
-const getSelectedTheme = (name: string) => {
+const getSelectedTheme = (name: Theme) => {
   const showThemePalette = process.env.REACT_APP_ENABLE_THEME_PALETTE === 'true';
 
   if (!showThemePalette) return variants[0];
@@ -22,15 +23,13 @@ const getSelectedTheme = (name: string) => {
   return themeConfig;
 };
 
-const createTheme = (name: any) => {
+const createTheme = (name: Theme) => {
   const themeConfig = getSelectedTheme(name);
 
   return createMuiTheme(
     {
       spacing: 4,
       breakpoints: breakpoints,
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       components: components,
       typography: typography,
       shadows: shadows,

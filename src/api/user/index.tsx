@@ -4,7 +4,7 @@ import { BASE_URL } from '../constants';
 export interface ResponseUsersDetails {
   id: number;
   name: string;
-  mobile_number: number;
+  mobile: number;
   email: string;
   dob: string;
   gender: string;
@@ -13,6 +13,7 @@ export interface ResponseUsersDetails {
   created_at: string;
   updated_at: string;
 }
+
 export interface ResponseUsersList {
   data: ResponseUsersDetails[];
   meta: {
@@ -23,7 +24,7 @@ export interface ResponseUsersList {
 
 const userApis = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getUserDetails: builder.query<ResponseUsersDetails, void>({
+    getUserDetails: builder.query<{ data: ResponseUsersDetails }, void>({
       query: () => ({
         url: `${BASE_URL}/users/token/details`
       })
@@ -41,20 +42,27 @@ const userApis = apiSlice.injectEndpoints({
         method: 'POST'
       })
     }),
-    getUserById: builder.query<any, string>({ 
-      query: (uuid) => ({ 
-        url: `${BASE_URL}/users/${uuid}` 
+    getUserById: builder.query<any, string>({
+      query: (uuid) => ({
+        url: `${BASE_URL}/users/${uuid}`
       })
     }),
-    updateUser: builder.mutation<any, { uuid: string; payload: any }>({ 
+    updateUser: builder.mutation<any, { uuid: string; payload: any }>({
       query: ({ uuid, payload }) => ({
-        url: `${BASE_URL}/users/${uuid}`, 
-        body: payload, 
+        url: `${BASE_URL}/users/${uuid}`,
+        body: payload,
         method: 'PUT'
       })
     })
   })
 });
 
-export const { useGetUserDetailsQuery, useLazyGetUserDetailsQuery, useGetUsersQuery, useAddUsersMutation,useGetUserByIdQuery,useUpdateUserMutation } = userApis;
+export const {
+  useGetUserDetailsQuery,
+  useLazyGetUserDetailsQuery,
+  useGetUsersQuery,
+  useAddUsersMutation,
+  useGetUserByIdQuery,
+  useUpdateUserMutation
+} = userApis;
 export default userApis.reducer;

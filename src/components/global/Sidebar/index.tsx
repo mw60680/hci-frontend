@@ -33,7 +33,6 @@ const Sidebar: React.FC<SidebarProps> = ({ popupStatus, setPopupStatus }) => {
           flexDirection: 'column',
           width: 200,
           backgroundColor: theme.palette.primary.main,
-          height: '100%',
           boxShadow:
             '0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);'
         }}
@@ -48,7 +47,7 @@ const Sidebar: React.FC<SidebarProps> = ({ popupStatus, setPopupStatus }) => {
         flexDirection: 'column',
         width: 250,
         backgroundColor: theme.palette.primary.main,
-        height: '100vh',
+        height: 'calc(100vh-64px)',
         '-webkit-box-shadow': '7px 1px 13px -4px rgba(71,70,71,0.49)',
         '-moz-box-shadow': '7px 1px 13px -4px rgba(71,70,71,0.49)',
         boxShadow: '7px 1px 13px -4px rgba(71,70,71,0.49)'

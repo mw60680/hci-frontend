@@ -1,6 +1,5 @@
-import { useRoutes } from 'react-router-dom';
+import { Navigate, useRoutes } from 'react-router-dom';
 import AddUser from '../pages/users/AddUser';
-import HomePage from '../components/Home';
 import Login from '../pages/Login';
 import Profile from '../pages/Profile';
 import Layout from '../components/global/Layout';
@@ -19,7 +18,7 @@ const routesMap = [
     element: (
       <Layout>
         <PrivateRoute>
-          <HomePage />
+          <Navigate to='/profile' replace />
         </PrivateRoute>
       </Layout>
     )
@@ -84,7 +83,7 @@ const routesMap = [
         path: 'add',
         element: (
           <PrivateRoute>
-          <AddClient/>
+            <AddClient />
           </PrivateRoute>
         )
       },
@@ -100,7 +99,7 @@ const routesMap = [
         path: 'details/:uuid',
         element: (
           <PrivateRoute>
-            <ClientDetails></ClientDetails>
+            <ClientDetails />
           </PrivateRoute>
         )
       }

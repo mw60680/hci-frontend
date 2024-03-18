@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import { useState } from 'react';
 import { DataGrid, GridColumnHeaderParams, GridColumns, GridRowParams } from '@mui/x-data-grid';
 
@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import ContentWrapper from '../../../components/ContentWrapper';
 import CustomPagination from '../../../components/global/Table/utils/CustomPagination';
 import { useGetClientsQuery } from '../../../api/client';
-
 
 const columns: GridColumns = [
   {
@@ -77,13 +76,13 @@ const ClientList: React.FC = () => {
   const [paginationParams, setPaginationParams] = useState({ page: 0, size: 10 });
 
   const { data: clientDetails, isLoading, isError, isFetching } = useGetClientsQuery({ params: paginationParams });
-  console.log(clientDetails);
+
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <CircularProgress />;
   }
 
   if (isError) {
-    return <p>Error loading data</p>;
+    return <p>Error loading client list</p>;
   }
 
   const updatedColumns = [
@@ -104,13 +103,13 @@ const ClientList: React.FC = () => {
           Edit
         </Button>,
         <Button
-        key='action'
-        onClick={() => {
-          const uuid = params.row.uuid;
-          navigate(`details/${uuid}`);
-        }}>
-        Details
-      </Button>
+          key='action'
+          onClick={() => {
+            const uuid = params.row.uuid;
+            navigate(`details/${uuid}`);
+          }}>
+          Details
+        </Button>
       ]
     }
   ];

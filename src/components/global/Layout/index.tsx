@@ -1,6 +1,5 @@
 import { Box } from '@mui/material';
 import React, { useState } from 'react';
-import Footer from '../Footer';
 import Header from '../Header';
 import Sidebar from '../Sidebar';
 import { Outlet } from 'react-router-dom';
@@ -13,12 +12,11 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
       <Header setOpenSidebar={() => setOpenSidebar(true)} />
       <Box sx={{ display: 'flex' }}>
         <Sidebar setPopupStatus={setOpenSidebar} popupStatus={openSidebar} />
-        <Box width='100%'>
+        <Box width='100%' height='calc(100vh - 64px)'>
           {children}
           <Outlet />
         </Box>
       </Box>
-      <Footer />
     </Box>
   );
 };

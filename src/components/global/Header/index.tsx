@@ -4,19 +4,17 @@ import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const Header: React.FC<{setOpenSidebar: () => void }> = ({ setOpenSidebar}) => {
+const Header: React.FC<{ setOpenSidebar: () => void }> = ({ setOpenSidebar }) => {
   const navigate = useNavigate();
-  const handleLogout = () => {
-    console.log('logged out');
-  };
+
   return (
     <>
-      <AppBar position='static'>
+      <AppBar position='static' sx={{ height: '64px' }}>
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <DehazeIcon onClick={setOpenSidebar} sx={{ display: { sm: 'block', md: 'none' }, fontSize: '24px' }} />
 
           <Typography variant='h6' noWrap component='div' sx={{ cursor: 'pointer' }} onClick={() => navigate('/')}>
-            HCL Admin Dashboard
+            HCI Admin Dashboard
           </Typography>
 
           <Box sx={{ display: 'flex', columnGap: '12px' }}>
@@ -32,7 +30,6 @@ const Header: React.FC<{setOpenSidebar: () => void }> = ({ setOpenSidebar}) => {
           </Box>
         </Toolbar>
       </AppBar>
-      {/* <Sidebar setPopupStatus={setOpenSidebar} popupStatus={openSidebar} /> */}
     </>
   );
 };
