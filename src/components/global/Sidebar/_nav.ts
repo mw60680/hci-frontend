@@ -59,6 +59,22 @@ const _nav = [
         link: '/clients/add'
       }
     ]
+  },
+  {
+    text: 'Vectors',
+    icon: ContactEmergencyIcon,
+    children: [
+      {
+        text: 'Vectors',
+        icon: ContactEmergencyIcon,
+        link: '/vectors'
+      },
+      {
+        text: 'Add Vectors',
+        icon: ContactEmergencyIcon,
+        link: '/vectors/add'
+      }
+    ]
   }
 ];
 

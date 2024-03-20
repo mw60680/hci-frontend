@@ -11,6 +11,7 @@ import ClientList from '../pages/client/ClientList';
 import AddClient from '../pages/client/AddClient';
 import UpdateClient from '../pages/client/UpdateClient';
 import ClientDetails from '../pages/client/ClientDetails.tsx';
+import VendorList from '../pages/vendor/VendorList';
 
 const routesMap = [
   {
@@ -46,6 +47,36 @@ const routesMap = [
         element: (
           <PrivateRoute>
             <UsersList />
+          </PrivateRoute>
+        )
+      },
+      {
+        path: 'add',
+        element: (
+          <PrivateRoute>
+            <AddUser />
+          </PrivateRoute>
+        )
+      },
+      {
+        path: ':uuid',
+        element: (
+          <PrivateRoute>
+            <UpdateUser />
+          </PrivateRoute>
+        )
+      }
+    ]
+  },
+  {
+    path: '/vectors',
+    element: <Layout />,
+    children: [
+      {
+        path: '',
+        element: (
+          <PrivateRoute>
+            <VendorList/>
           </PrivateRoute>
         )
       },

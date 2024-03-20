@@ -41,8 +41,9 @@ const columns: GridColumns = [
 const ClientDetails: React.FC = () => {
     const { uuid } = useParams<{ uuid: string }>();
     const { data: client, isLoading, isError, refetch, isFetching } = useGetClientByIdQuery(uuid || '');
-    console.log(client);
-
+    if(isLoading){
+        return <p>Loading...</p>;
+    }
     return (
         <ContentWrapper>
             <Box
@@ -58,7 +59,7 @@ const ClientDetails: React.FC = () => {
             >
                 <Typography variant={'h3'} component={'h6'}>{client?.data?.companyName} </Typography>
                 <Divider sx={{ margin: '20px 0' }} />
-                <Grid container spacing={2}>
+                <Grid container spacing={2} sx={{color:'white',padding:'1%'}}>
                     <Grid item xs={12} md={4}>
                         <Typography variant={'h4'} component={'h6'} sx={{ fontWeight: 'bold', display: 'flex', alignItems: 'center' }}>
                             <BusinessTwoToneIcon sx={{ marginRight: '5px' }} /> Legal Name
@@ -83,7 +84,7 @@ const ClientDetails: React.FC = () => {
                             })}
                         </Typography>
                     </Grid>
-                    <Grid item xs={12} md={4}>
+                    <Grid item xs={12} md={4} >
                         <Typography variant={'h4'} component={'h6'} sx={{ fontWeight: 'bold', display: 'flex', alignItems: 'center' }}>
                             <DateRangeIcon sx={{ marginRight: '5px' }} /> Contract End Date
                         </Typography>
@@ -112,7 +113,7 @@ const ClientDetails: React.FC = () => {
                     sx={{ overflowY: 'auto' }}
                 />
                 <Divider sx={{ margin: '20px 0' }} />
-                <Grid container spacing={2}>
+                <Grid container spacing={2} sx={{color:'white',padding:'1%'}}>
                     <Grid item xs={12} md={4}>
                         <Typography variant={'h4'} component={'h6'} sx={{ fontWeight: 'bold', display: 'flex', alignItems: 'center' }}>
                             GST Number
