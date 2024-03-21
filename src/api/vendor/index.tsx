@@ -26,9 +26,14 @@ const vendorApis = apiSlice.injectEndpoints({
         url: `${BASE_URL}/vendors`,
         params
       })
-    })
+    }),
+    getVendorById: builder.query<any, string>({ 
+      query: (uuid) => ({ 
+        url: `${BASE_URL}/vendors/${uuid}` 
+      })
+    }),
   })
 });
 
-export const {useGetVendorsQuery} = vendorApis;
+export const {useGetVendorsQuery,useGetVendorByIdQuery} = vendorApis;
 export default vendorApis; // Exporting the entire clientApis object

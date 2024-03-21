@@ -12,6 +12,7 @@ import AddClient from '../pages/client/AddClient';
 import UpdateClient from '../pages/client/UpdateClient';
 import ClientDetails from '../pages/client/ClientDetails.tsx';
 import VendorList from '../pages/vendor/VendorList';
+import VendorDetails from '../pages/vendor/VendorDetails';
 
 const routesMap = [
   {
@@ -93,6 +94,14 @@ const routesMap = [
         element: (
           <PrivateRoute>
             <UpdateUser />
+          </PrivateRoute>
+        )
+      },
+      {
+        path: 'details/:uuid',
+        element: (
+          <PrivateRoute>
+           <VendorDetails />
           </PrivateRoute>
         )
       }

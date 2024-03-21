@@ -13,7 +13,7 @@ const WHITE = {
 };
 
 const BLACK = {
-  absolute: '#000',
+  absolute: '#000', 
   primary: '#191C24',
   secondary: '#233044'
 };
