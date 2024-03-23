@@ -13,6 +13,8 @@ import UpdateClient from '../pages/client/UpdateClient';
 import ClientDetails from '../pages/client/ClientDetails.tsx';
 import VendorList from '../pages/vendor/VendorList';
 import VendorDetails from '../pages/vendor/VendorDetails';
+import AddVendor from '../pages/vendor/AddVendor';
+import UpdateVendor from '../pages/vendor/UpdateVendor';
 
 const routesMap = [
   {
@@ -85,7 +87,7 @@ const routesMap = [
         path: 'add',
         element: (
           <PrivateRoute>
-            <AddUser />
+            <AddVendor />
           </PrivateRoute>
         )
       },
@@ -93,7 +95,7 @@ const routesMap = [
         path: ':uuid',
         element: (
           <PrivateRoute>
-            <UpdateUser />
+           <UpdateVendor />
           </PrivateRoute>
         )
       },

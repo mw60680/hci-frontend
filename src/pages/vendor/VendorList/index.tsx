@@ -48,13 +48,6 @@ const columns: GridColumns = [
     valueFormatter: (data) => data.value.title,
     width: 150,
     renderHeader: (params: GridColumnHeaderParams) => <strong>{params.colDef.headerName}</strong>
-  },
-  {
-    field: 'active',
-    headerName: 'Active',
-    valueFormatter: (data) => data.value.title,
-    width: 100,
-    renderHeader: (params: GridColumnHeaderParams) => <strong>{params.colDef.headerName}</strong>
   }
 ];
 

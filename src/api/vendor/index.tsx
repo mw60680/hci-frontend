@@ -32,8 +32,22 @@ const vendorApis = apiSlice.injectEndpoints({
         url: `${BASE_URL}/vendors/${uuid}` 
       })
     }),
+    addVendor: builder.mutation<any, any>({
+      query: (payload) => ({
+        url: `${BASE_URL}/vendors`,
+        body: payload,
+        method: 'POST'
+      })
+    }),
+    updateVendor: builder.mutation<any, { uuid: string; payload: any }>({
+      query: ({ uuid, payload }) => ({
+        url: `${BASE_URL}/vendors/${uuid}`,
+        body: payload,
+        method: 'PUT'
+      })
+    })
   })
 });
 
-export const {useGetVendorsQuery,useGetVendorByIdQuery} = vendorApis;
+export const {useGetVendorsQuery,useGetVendorByIdQuery,useAddVendorMutation,useUpdateVendorMutation} = vendorApis;
 export default vendorApis; // Exporting the entire clientApis object

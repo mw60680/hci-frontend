@@ -69,8 +69,12 @@ const UpdateClient: React.FC = () => {
                 contractEndDate: values.contractEndDate.toISOString().split('T')[0]
             };
             const apiRes = await updateClientMutation({ uuid: uuid || '', payload });
-            console.log(apiRes);
-            window.location.reload();
+            if ('error' in apiRes) {
+                throw apiRes.error;
+            }
+            else{
+                window.location.reload();
+            }
         } catch (error) {
             console.log(error);
         }
@@ -120,7 +124,7 @@ const UpdateClient: React.FC = () => {
                                     InputProps={{
                                         color: values.companyName !== client.data.companyName ? 'warning' : 'primary'
                                     }}
-                                    focused={values.companyName !== client.data.companyName} // Set focused prop based on the condition
+                                    focused={values.companyName !== client.data.companyName}
                                     error={touched.companyName && Boolean(errors.companyName)}
                                     helperText={!!touched.companyName && errors.companyName}
                                 />

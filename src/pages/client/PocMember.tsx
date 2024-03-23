@@ -17,7 +17,7 @@ const validationSchema = Yup.object({
   designation: Yup.string().required('Designation is required')
 });
 
-const AddPocMember: React.FC<{
+const PocMember: React.FC<{
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   poc: Poc[];
@@ -107,4 +107,4 @@ const AddPocMember: React.FC<{
   );
 };
 
-export default AddPocMember;
+export default PocMember;
