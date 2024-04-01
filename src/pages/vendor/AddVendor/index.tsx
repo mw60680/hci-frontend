@@ -1,4 +1,4 @@
-import { Box, Button, Chip, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormControlLabel, FormLabel, IconButton, MenuItem, Radio, RadioGroup, TextField, Typography, popoverClasses } from '@mui/material';
+import { Box, Button, Chip, IconButton, TextField, Typography } from '@mui/material';
 import * as Yup from 'yup';
 import { Formik, Form } from 'formik';
 import React, { useState } from 'react';
@@ -18,31 +18,31 @@ const validationSchema = Yup.object({
   state: Yup.string().required('Type is required'),
   supportedPincodes: Yup.array().min(1, 'At least one Supported Pincodes is required'),
   homeCollectionCharges: Yup.array().min(1, 'At least one Home Collection Charges is required'),
-  poc: Yup.array().min(1, 'At least one Poc Member is required'),
+  poc: Yup.array().min(1, 'At least one Poc Member is required')
 });
 
 interface Poc {
-  name: string
+  name: string;
 }
 const AddVendor: React.FC = () => {
   const [addVendorMutation, { isLoading }] = useAddVendorMutation();
   const [clickedItemIndex, setClickedItemIndex] = useState<number>(-1);
   const [open, setOpen] = useState(false);
-  const [clickedItem,setClickedItem] = useState<String>("");
+  const [clickedItem, setClickedItem] = useState<string>('');
 
   const handleSubmit = async (values: any) => {
     try {
       console.log(values);
-        const payload = {
-          ...values
-        };
-        console.log(payload);
-        const apiRes = await addVendorMutation(payload);
+      const payload = {
+        ...values
+      };
+      console.log(payload);
+      const apiRes = await addVendorMutation(payload);
 
-        if ('error' in apiRes) {
-          throw apiRes.error;
-        }
-        // console.log(apiRes);
+      if ('error' in apiRes) {
+        throw apiRes.error;
+      }
+      // console.log(apiRes);
     } catch (error) {
       console.log(error);
     }
@@ -62,10 +62,10 @@ const AddVendor: React.FC = () => {
           locality: '',
           city: '',
           state: '',
-          active:true,
-          supportedPincodes:[],
-          homeCollectionCharges:[],
-          poc:[]
+          active: true,
+          supportedPincodes: [],
+          homeCollectionCharges: [],
+          poc: []
         }}
         validationSchema={validationSchema}
         onSubmit={(values, { resetForm }) => {
@@ -153,8 +153,10 @@ const AddVendor: React.FC = () => {
                   <IconButton
                     color='primary'
                     sx={{ marginLeft: 'auto', fontSize: '1rem' }}
-                    onClick={()=>{setOpen(true); setClickedItem("supported_pincodes");}}
-                  >
+                    onClick={() => {
+                      setOpen(true);
+                      setClickedItem('supported_pincodes');
+                    }}>
                     <AddIcon />
                   </IconButton>
                   Supported Pincodes
@@ -166,24 +168,26 @@ const AddVendor: React.FC = () => {
                 )}
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                   {values.supportedPincodes.map((pincode: string, index: number) => (
-                    <><Chip
-                      key={index}
-                      label={pincode}
-                      onClick={() => {
-                        setOpen(true);
-                        handleChipClick(index);
-                        setClickedItem("supported_pincodes");
-                      }}
-                      onDelete={() => {
-                        const updatedPincodes = [...values.supportedPincodes];
-                        updatedPincodes.splice(index, 1);
-                        setFieldValue('supportedPincodes', updatedPincodes);
-                      }} />
+                    <>
+                      <Chip
+                        key={index}
+                        label={pincode}
+                        onClick={() => {
+                          setOpen(true);
+                          handleChipClick(index);
+                          setClickedItem('supported_pincodes');
+                        }}
+                        onDelete={() => {
+                          const updatedPincodes = [...values.supportedPincodes];
+                          updatedPincodes.splice(index, 1);
+                          setFieldValue('supportedPincodes', updatedPincodes);
+                        }}
+                      />
                     </>
                   ))}
                 </Box>
-                <Pincodes 
-                  open={open && clickedItem === "supported_pincodes" ? true : false}
+                <Pincodes
+                  open={open && clickedItem === 'supported_pincodes' ? true : false}
                   setOpen={setOpen}
                   supported_pincodes={values.supportedPincodes}
                   setFieldValue={setFieldValue}
@@ -195,8 +199,10 @@ const AddVendor: React.FC = () => {
                   <IconButton
                     color='primary'
                     sx={{ marginLeft: 'auto', fontSize: '1rem' }}
-                    onClick={()=>{setOpen(true); setClickedItem("homeCollectionCharges");}}
-                  >
+                    onClick={() => {
+                      setOpen(true);
+                      setClickedItem('homeCollectionCharges');
+                    }}>
                     <AddIcon />
                   </IconButton>
                   Home Collection Charges
@@ -207,25 +213,27 @@ const AddVendor: React.FC = () => {
                   </Typography>
                 )}
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                  {values.homeCollectionCharges.map((row :any, index: number) => (
-                    <><Chip
-                      key={index}
-                      label={row?.city}
-                      onClick={() => {
-                        setOpen(true);
-                        handleChipClick(index);
-                        setClickedItem("homeCollectionCharges");
-                      }}
-                      onDelete={() => {
-                        const updatedHomeCollectionCharges = [...values.homeCollectionCharges];
-                        updatedHomeCollectionCharges.splice(index, 1);
-                        setFieldValue('homeCollectionCharges', updatedHomeCollectionCharges);
-                      }} />
+                  {values.homeCollectionCharges.map((row: any, index: number) => (
+                    <>
+                      <Chip
+                        key={index}
+                        label={row?.city}
+                        onClick={() => {
+                          setOpen(true);
+                          handleChipClick(index);
+                          setClickedItem('homeCollectionCharges');
+                        }}
+                        onDelete={() => {
+                          const updatedHomeCollectionCharges = [...values.homeCollectionCharges];
+                          updatedHomeCollectionCharges.splice(index, 1);
+                          setFieldValue('homeCollectionCharges', updatedHomeCollectionCharges);
+                        }}
+                      />
                     </>
                   ))}
                 </Box>
-                <HomeCollectionCharges 
-                  open={open && clickedItem === "homeCollectionCharges" ? true : false}
+                <HomeCollectionCharges
+                  open={open && clickedItem === 'homeCollectionCharges' ? true : false}
                   setOpen={setOpen}
                   homeCollectionCharges={values.homeCollectionCharges}
                   setFieldValue={setFieldValue}
@@ -237,8 +245,10 @@ const AddVendor: React.FC = () => {
                   <IconButton
                     color='primary'
                     sx={{ marginLeft: 'auto', fontSize: '1rem' }}
-                    onClick={()=>{setOpen(true); setClickedItem("poc");}}
-                  >
+                    onClick={() => {
+                      setOpen(true);
+                      setClickedItem('poc');
+                    }}>
                     <AddIcon />
                   </IconButton>
                   POC
@@ -249,25 +259,27 @@ const AddVendor: React.FC = () => {
                   </Typography>
                 )}
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                  {values.poc.map((row :any, index: number) => (
-                    <><Chip
-                      key={index}
-                      label={row?.name}
-                      onClick={() => {
-                        setOpen(true);
-                        handleChipClick(index);
-                        setClickedItem("poc");
-                      }}
-                      onDelete={() => {
-                        const updatedPoc = [...values.poc];
-                        updatedPoc.splice(index, 1);
-                        setFieldValue('poc', updatedPoc);
-                      }} />
+                  {values.poc.map((row: any, index: number) => (
+                    <>
+                      <Chip
+                        key={index}
+                        label={row?.name}
+                        onClick={() => {
+                          setOpen(true);
+                          handleChipClick(index);
+                          setClickedItem('poc');
+                        }}
+                        onDelete={() => {
+                          const updatedPoc = [...values.poc];
+                          updatedPoc.splice(index, 1);
+                          setFieldValue('poc', updatedPoc);
+                        }}
+                      />
                     </>
                   ))}
                 </Box>
                 <PocMember
-                  open={open  && clickedItem === "poc" ? true : false}
+                  open={open && clickedItem === 'poc' ? true : false}
                   setOpen={setOpen}
                   poc={values.poc}
                   setFieldValue={setFieldValue}
@@ -291,8 +303,5 @@ const AddVendor: React.FC = () => {
     </ContentWrapper>
   );
 };
-
-
-
 
 export default AddVendor;

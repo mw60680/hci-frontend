@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, IconButton, Box } from '@mui/material';
-import { Formik, FieldArray, Form, Field, ErrorMessage } from 'formik';
+import { Formik, FieldArray, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -14,10 +14,12 @@ interface Poc {
 
 const validationSchema = Yup.object({
   name: Yup.string().required('Name is required'),
-  email: Yup.array()
-    .of(Yup.string().email('Invalid email address').required('Email is required')),
-  contact: Yup.array()
-    .of(Yup.string().required('Contact is required').matches(/^[6-9]\d{9}$/, 'Please enter a valid mobile number')),
+  email: Yup.array().of(Yup.string().email('Invalid email address').required('Email is required')),
+  contact: Yup.array().of(
+    Yup.string()
+      .required('Contact is required')
+      .matches(/^[6-9]\d{9}$/, 'Please enter a valid mobile number')
+  ),
   designation: Yup.string().required('Designation is required')
 });
 
@@ -31,7 +33,13 @@ const PocMember: React.FC<{
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
 }> = ({ open, setOpen, poc, setFieldValue, editPoc, editPocIndex, setEditPocIndex }) => {
   return (
-    <Dialog open={open} onClose={() => {setEditPocIndex(-1); setOpen(false)}} fullWidth>
+    <Dialog
+      open={open}
+      onClose={() => {
+        setEditPocIndex(-1);
+        setOpen(false);
+      }}
+      fullWidth>
       <DialogTitle>POC Details</DialogTitle>
       <DialogContent>
         <Formik
@@ -46,12 +54,10 @@ const PocMember: React.FC<{
             resetForm();
             if (editPocIndex !== -1) {
               poc[editPocIndex] = values;
-              setFieldValue('poc', poc);  
+              setFieldValue('poc', poc);
             } else {
-              console.log("hii");
               const updatedPoc = [...poc, values];
               setFieldValue('poc', updatedPoc);
-              console.log(poc);
             }
             setEditPocIndex(-1);
             setOpen(false);
@@ -68,11 +74,11 @@ const PocMember: React.FC<{
                 error={touched.name && Boolean(errors.name)}
                 helperText={touched.name && errors.name}
               />
-              <FieldArray name="email">
+              <FieldArray name='email'>
                 {({ push, remove }) => (
                   <div>
                     {values.email.map((email, index) => (
-                      <Box key={index} display="flex" alignItems="center">
+                      <Box key={index} display='flex' alignItems='center'>
                         <Field name={`email.${index}`}>
                           {({ field }: { field: any }) => (
                             <TextField
@@ -92,20 +98,22 @@ const PocMember: React.FC<{
                         )}
                       </Box>
                     ))}
-                    <IconButton onClick={async () => {
-                      await validateForm();
-                      push('');
-                    }} sx={{ fontSize: 'small' }}>
+                    <IconButton
+                      onClick={async () => {
+                        await validateForm();
+                        push('');
+                      }}
+                      sx={{ fontSize: 'small' }}>
                       <AddIcon /> Add Email
                     </IconButton>
                   </div>
                 )}
               </FieldArray>
-              <FieldArray name="contact">
+              <FieldArray name='contact'>
                 {({ push, remove }) => (
                   <div>
                     {values.contact.map((contact, index) => (
-                      <Box key={index} display="flex" alignItems="center">
+                      <Box key={index} display='flex' alignItems='center'>
                         <Field name={`contact.${index}`}>
                           {({ field }: { field: any }) => (
                             <TextField
@@ -125,10 +133,12 @@ const PocMember: React.FC<{
                         )}
                       </Box>
                     ))}
-                    <IconButton onClick={async () => {
-                      await validateForm();
-                      push('');
-                    }} sx={{ fontSize: 'small' }}>
+                    <IconButton
+                      onClick={async () => {
+                        await validateForm();
+                        push('');
+                      }}
+                      sx={{ fontSize: 'small' }}>
                       <AddIcon /> Add Contact
                     </IconButton>
                   </div>
@@ -145,7 +155,13 @@ const PocMember: React.FC<{
                 helperText={touched.designation && errors.designation}
               />
               <DialogActions>
-                <Button onClick={() => { setEditPocIndex(-1); setOpen(false) }}>Cancel</Button>
+                <Button
+                  onClick={() => {
+                    setEditPocIndex(-1);
+                    setOpen(false);
+                  }}>
+                  Cancel
+                </Button>
                 <Button type='submit'>{editPoc ? 'Edit' : 'Add'}</Button>
               </DialogActions>
             </Form>
