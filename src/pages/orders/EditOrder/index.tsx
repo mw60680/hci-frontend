@@ -1,41 +1,26 @@
 import React, { useState } from 'react';
-import { Alert, Button, Stack, Typography } from '@mui/material';
-import { Formik, FormikHelpers, FormikState } from 'formik';
+import { useParams } from 'react-router-dom';
+import { useOrderDetailsQuery, useUpdateOrderMutation } from '../../../api/orders';
 import ContentWrapper from '../../../components/ContentWrapper';
+import { Formik, FormikHelpers, FormikState } from 'formik';
+import { Alert, Button, Stack, Typography } from '@mui/material';
 import OrderForm, { OrderFormFields } from '../../../components/orders/OrderForm';
+import { mapOrderDetailResponseToForm } from './util';
 import { ICreateOrderRequest } from '../../../api/types/request/orders';
-import { useCreateOrderMutation } from '../../../api/orders';
-import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
 
-const initialValues = {
-  collectionType: 'HOME_COLLECTION',
-  patient: {
-    name: '',
-    gender: '',
-    dob: '',
-    mobile: '',
-    email: ''
-  },
-  payment: {
-    status: '',
-    mode: '',
-    transactionId: '',
-    amount: '',
-    paid: ''
-  },
-  homeCollection: {},
-  camp: {}
-};
+const EditOrder = () => {
+  const { uuid } = useParams();
 
-const CreateOrder = () => {
   const [error, setError] = useState('');
 
-  const [createOrder] = useCreateOrderMutation();
+  const { data: orderData, isLoading } = useOrderDetailsQuery({ uuid: uuid! }, { skip: !uuid });
 
-  const navigate = useNavigate();
+  const [updateOrder] = useUpdateOrderMutation();
 
-  const handleOrderCreation = async (
+  if (isLoading) return <div>Loading...</div>;
+
+  const handleSave = async (
     values: FormikState<OrderFormFields>['values'],
     helpers: FormikHelpers<OrderFormFields>
   ) => {
@@ -102,18 +87,13 @@ const CreateOrder = () => {
         body.camp = camp;
       }
 
-      const res = await createOrder({ body });
+      const res = await updateOrder({ uuid: uuid!, body });
 
       console.debug(res);
 
       if ('error' in res) throw res.error;
-
-      console.debug('navigate to orders');
-
-      navigate('/orders');
     } catch (err: any) {
-      console.error(err);
-      setError('Error creating order');
+      setError('Error updating order');
     } finally {
       helpers.setSubmitting(false);
     }
@@ -121,13 +101,13 @@ const CreateOrder = () => {
 
   return (
     <ContentWrapper>
-      <Formik initialValues={initialValues} onSubmit={handleOrderCreation}>
+      <Formik initialValues={mapOrderDetailResponseToForm(orderData!)} onSubmit={handleSave}>
         {({ handleSubmit, handleChange, handleBlur, setFieldValue, values, isSubmitting }) => (
           <Stack gap='1em' component='form' onSubmit={handleSubmit}>
             {error && <Alert severity='error'>{error}</Alert>}
             <Stack direction='row' justifyContent='space-between'>
               <Typography fontSize='1.25rem' fontWeight={700}>
-                Create Order
+                Edit Order
               </Typography>
 
               <Button type='submit' variant='contained' disabled={isSubmitting}>
@@ -147,4 +127,4 @@ const CreateOrder = () => {
   );
 };
 
-export default CreateOrder;
+export default EditOrder;

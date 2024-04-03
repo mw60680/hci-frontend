@@ -2,28 +2,28 @@ import React from 'react';
 import { FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
 import { DateField, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { FormikHandlers, FormikHelpers, FormikState } from 'formik';
+import { FormikHandlers, FormikState } from 'formik';
 import HomeCollectionDetails, { HomeCollectionFields } from './HomeCollectionDetails';
 import { CampFields } from './CampCollectionDetails';
 
 export type OrderFormFields = {
-  collectionType: string;
-  patient: {
+  collectionType?: string;
+  patient: Partial<{
     name: string;
     mobile: string;
     email: string;
-    dob: string;
+    dob: string | Date;
     gender: string;
-  };
-  payment: {
+  }>;
+  payment: Partial<{
     status: string;
     mode: string;
     transactionId: string;
     amount: string;
     paid: string;
-  };
-  homeCollection: Partial<HomeCollectionFields>;
-  camp: Partial<CampFields>;
+  }>;
+  homeCollection?: Partial<HomeCollectionFields>;
+  camp?: Partial<CampFields>;
 };
 
 const PAYMENT_STATUS = ['COMPLETED', 'PENDING'];
@@ -162,7 +162,11 @@ const OrderForm: React.FC<ComponentProps> = ({ values, handleChange, handleBlur,
       </Stack>
 
       {values.collectionType === 'HOME_COLLECTION' && (
-        <HomeCollectionDetails values={values.homeCollection} handleBlur={handleBlur} handleChange={handleChange} />
+        <HomeCollectionDetails
+          values={values.homeCollection || {}}
+          handleBlur={handleBlur}
+          handleChange={handleChange}
+        />
       )}
     </Stack>
   );

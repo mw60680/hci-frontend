@@ -31,7 +31,20 @@ export interface IOrdersListItem {
   patient: IPatientInfo;
   payment: IPaymentInfo;
   home_collection: {
-    barcode: [];
+    address: string;
+    locality: string;
+    city: string;
+    pin_code: string;
+    lat: string;
+    lng: string;
+    alternate_mobile: string;
+    scheduled_time: string;
+    sample_processing_lab: string;
+    phlebo_id: string;
+    phlebo_notes: string;
+    runner_id: string;
+    tube_type: string;
+    barcode: string[];
   };
   camp: ICampInfo;
   remarks: string[];
@@ -50,4 +63,8 @@ export interface IOrdersListResponse {
     page: number;
     size: number;
   };
+}
+
+export interface IOrderDetailsResponse {
+  data: IOrdersListItem;
 }

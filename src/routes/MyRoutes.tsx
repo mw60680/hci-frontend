@@ -17,6 +17,7 @@ import AddVendor from '../pages/vendor/AddVendor';
 import UpdateVendor from '../pages/vendor/UpdateVendor';
 import OrdersList from '../pages/orders/OrdersList';
 import CreateOrder from '../pages/orders/CreateOrder';
+import EditOrder from '../pages/orders/EditOrder';
 
 const routesMap = [
   {
@@ -166,6 +167,14 @@ const routesMap = [
         element: (
           <PrivateRoute>
             <CreateOrder />
+          </PrivateRoute>
+        )
+      },
+      {
+        path: ':uuid',
+        element: (
+          <PrivateRoute>
+            <EditOrder />
           </PrivateRoute>
         )
       }
