@@ -14,7 +14,6 @@ const baseQuery = fetchBaseQuery({
       headers.set('Cookie', `refreshToken=${refreshToken}`);
     }
     headers.set('Client-Device', window?.navigator?.userAgent);
-    headers.set('Accept', 'application/json');
     headers.set('Content-Type', 'application/json');
     return headers;
   }
@@ -23,9 +22,9 @@ const baseQuery = fetchBaseQuery({
 const customFetchBase = async (args: any, api: any, extraOptions: any) => {
   const result = await baseQuery(args, api, extraOptions);
 
-  const response = result.meta?.response?.status;
+  const responseStatus = result.meta?.response?.status;
 
-  if (response === 401) {
+  if (responseStatus === 401) {
     // Error handling
   }
 

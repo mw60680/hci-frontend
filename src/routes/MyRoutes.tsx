@@ -15,6 +15,8 @@ import VendorList from '../pages/vendor/VendorList';
 import VendorDetails from '../pages/vendor/VendorDetails';
 import AddVendor from '../pages/vendor/AddVendor';
 import UpdateVendor from '../pages/vendor/UpdateVendor';
+import OrdersList from '../pages/orders/OrdersList';
+import CreateOrder from '../pages/orders/CreateOrder';
 
 const routesMap = [
   {
@@ -79,7 +81,7 @@ const routesMap = [
         path: '',
         element: (
           <PrivateRoute>
-            <VendorList/>
+            <VendorList />
           </PrivateRoute>
         )
       },
@@ -95,7 +97,7 @@ const routesMap = [
         path: ':uuid',
         element: (
           <PrivateRoute>
-           <UpdateVendor />
+            <UpdateVendor />
           </PrivateRoute>
         )
       },
@@ -103,7 +105,7 @@ const routesMap = [
         path: 'details/:uuid',
         element: (
           <PrivateRoute>
-           <VendorDetails />
+            <VendorDetails />
           </PrivateRoute>
         )
       }
@@ -142,6 +144,28 @@ const routesMap = [
         element: (
           <PrivateRoute>
             <ClientDetails />
+          </PrivateRoute>
+        )
+      }
+    ]
+  },
+  {
+    path: '/orders',
+    element: <Layout />,
+    children: [
+      {
+        path: '',
+        element: (
+          <PrivateRoute>
+            <OrdersList />
+          </PrivateRoute>
+        )
+      },
+      {
+        path: 'create',
+        element: (
+          <PrivateRoute>
+            <CreateOrder />
           </PrivateRoute>
         )
       }

@@ -1,17 +1,28 @@
-import { Box } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import React from 'react';
 
-const ContentWrapper: React.FC<{ children: React.ReactNode; style?: any }> = ({ children, style }) => {
+type ComponentProps = {
+  title?: string;
+  style?: any;
+};
+
+const ContentWrapper: React.FC<React.PropsWithChildren<ComponentProps>> = ({ children, style, title }) => {
   return (
-    <Box
+    <Stack
+      gap='2em'
       sx={{
         padding: { md: '18px', xs: '12px' },
         width: '100%',
         boxSizing: 'border-box',
         ...style
       }}>
-      {children}
-    </Box>
+      {title && (
+        <Typography fontSize='1.5rem' fontWeight={700}>
+          {title}
+        </Typography>
+      )}
+      <Box>{children}</Box>
+    </Stack>
   );
 };
 

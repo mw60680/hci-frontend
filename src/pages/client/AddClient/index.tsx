@@ -1,4 +1,22 @@
-import { Box, Button, Chip, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormControlLabel, FormLabel, IconButton, MenuItem, Radio, RadioGroup, TextField, Typography, popoverClasses } from '@mui/material';
+import {
+  Box,
+  Button,
+  Chip,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  IconButton,
+  MenuItem,
+  Radio,
+  RadioGroup,
+  TextField,
+  Typography,
+  popoverClasses
+} from '@mui/material';
 import * as Yup from 'yup';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Formik, Form } from 'formik';
@@ -23,10 +41,10 @@ const validationSchema = Yup.object({
 });
 
 interface Poc {
-  name: string,
-  email: string,
-  contact: string,
-  designation: string
+  name: string;
+  email: string;
+  contact: string;
+  designation: string;
 }
 const AddClient: React.FC = () => {
   const [addUserMutation, { isLoading }] = useAddClientsMutation();
@@ -147,12 +165,10 @@ const AddClient: React.FC = () => {
                   helperText={!!touched.mou && errors.mou}
                 />
                 <Typography variant='h4' component='h1'>
-
                   <IconButton
                     color='primary'
                     onClick={() => setOpen(true)}
-                    sx={{ marginLeft: 'auto', fontSize: '1rem' }}
-                  >
+                    sx={{ marginLeft: 'auto', fontSize: '1rem' }}>
                     <AddIcon />
                   </IconButton>
                   POC Details
@@ -164,18 +180,20 @@ const AddClient: React.FC = () => {
                 )}
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                   {values.poc.map((poc: Poc, index: number) => (
-                    <><Chip
-                      key={index}
-                      label={poc.name}
-                      onClick={() => {
-                        setOpen(true);
-                        handleChipClick(index);
-                      }}
-                      onDelete={() => {
-                        const updatedPoc = [...values.poc];
-                        updatedPoc.splice(index, 1);
-                        setFieldValue('poc', updatedPoc);
-                      }} />
+                    <>
+                      <Chip
+                        key={index}
+                        label={poc.name}
+                        onClick={() => {
+                          setOpen(true);
+                          handleChipClick(index);
+                        }}
+                        onDelete={() => {
+                          const updatedPoc = [...values.poc];
+                          updatedPoc.splice(index, 1);
+                          setFieldValue('poc', updatedPoc);
+                        }}
+                      />
                     </>
                   ))}
                 </Box>
@@ -195,8 +213,7 @@ const AddClient: React.FC = () => {
                     name='active'
                     value={values.active.toString()}
                     onChange={handleChange}
-                    sx={{ flexDirection: 'row' }}
-                  >
+                    sx={{ flexDirection: 'row' }}>
                     <FormControlLabel value={true} control={<Radio />} label='True' />
                     <FormControlLabel value={false} control={<Radio />} label='False' />
                   </RadioGroup>
@@ -213,8 +230,7 @@ const AddClient: React.FC = () => {
                     name='apiIntegrated'
                     value={values.apiIntegrated.toString()}
                     onChange={handleChange}
-                    sx={{ flexDirection: 'row' }}
-                  >
+                    sx={{ flexDirection: 'row' }}>
                     <FormControlLabel value={true} control={<Radio />} label='True' />
                     <FormControlLabel value={false} control={<Radio />} label='False' />
                   </RadioGroup>
@@ -240,8 +256,5 @@ const AddClient: React.FC = () => {
     </ContentWrapper>
   );
 };
-
-
-
 
 export default AddClient;
