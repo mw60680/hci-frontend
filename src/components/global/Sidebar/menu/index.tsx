@@ -18,6 +18,7 @@ export const renderSideMenu = (
   selectedItem: nav | null
 ) => {
   const theme = useTheme();
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', padding: 0 }}>
       {nav.map((item) => (
@@ -40,7 +41,6 @@ export const renderSideMenu = (
               userSelect: 'none'
             }}>
             <Typography fontWeight='700'>{item.text}</Typography>
-            {/* {item.icon && <item.icon />} */}
             <IconButton
               sx={{
                 marginLeft: 'auto',
@@ -68,7 +68,7 @@ export const renderSideMenu = (
                     fontSize: '14px',
                     cursor: 'pointer',
                     userSelect: 'none',
-                    pl: 4
+                    paddingLeft: '2em'
                   }}>
                   <Typography>{child.text}</Typography>
                 </Box>

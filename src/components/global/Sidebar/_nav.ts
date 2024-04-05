@@ -2,22 +2,6 @@ import ContactEmergencyIcon from '@mui/icons-material/ContactEmergency';
 
 const _nav = [
   {
-    text: 'Booking',
-    icon: ContactEmergencyIcon,
-    children: [
-      {
-        text: 'Consultation',
-        icon: ContactEmergencyIcon,
-        link: '/students'
-      },
-      {
-        text: 'Labs Appointment',
-        icon: ContactEmergencyIcon,
-        link: '/add-student'
-      }
-    ]
-  },
-  {
     text: 'Account',
     icon: ContactEmergencyIcon,
     children: [
@@ -41,6 +25,22 @@ const _nav = [
         text: 'Add User',
         icon: ContactEmergencyIcon,
         link: '/users/add'
+      }
+    ]
+  },
+  {
+    text: 'Orders',
+    icon: ContactEmergencyIcon,
+    children: [
+      {
+        text: 'Orders',
+        icon: ContactEmergencyIcon,
+        link: '/orders'
+      },
+      {
+        text: 'Create Order',
+        icon: ContactEmergencyIcon,
+        link: '/orders/create'
       }
     ]
   },
