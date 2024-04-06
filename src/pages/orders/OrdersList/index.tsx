@@ -5,18 +5,20 @@ import { Box, Button, Stack, Typography } from '@mui/material';
 import { DataGrid, GridColumnHeaderParams, GridColumns, GridRowParams } from '@mui/x-data-grid';
 import CustomPagination from '../../../components/global/Table/utils/CustomPagination';
 import { useNavigate } from 'react-router-dom';
+import Filters, { FiltersType } from './Filters';
 
 const OrdersList = () => {
+  const navigate = useNavigate();
+
+  const [paginationParams, setPaginationParams] = useState({ page: 0, size: 10 });
+  const [filters, setFilters] = useState<Partial<FiltersType>>({});
+
   const {
     data: orders,
     isLoading: ordersLoading,
     isFetching: ordersFetching,
     isError: ordersError
-  } = useOrdersListQuery({});
-
-  const navigate = useNavigate();
-
-  const [paginationParams, setPaginationParams] = useState({ page: 0, size: 10 });
+  } = useOrdersListQuery({ params: { ...paginationParams, ...filters } });
 
   if (ordersLoading) return <div>Loading...</div>;
 
@@ -93,6 +95,7 @@ const OrdersList = () => {
 
   return (
     <ContentWrapper>
+      <Filters formValues={filters} setFormValues={setFilters} />
       <Box sx={{ width: '100%', minHeight: '500px' }}>
         <DataGrid
           columns={columns}

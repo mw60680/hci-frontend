@@ -1,8 +1,7 @@
 import React from 'react';
-import { FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
+import { Stack, TextField, Typography } from '@mui/material';
 import { FormikHandlers } from 'formik';
-
-const PAYMENT_STATUS = ['COMPLETED', 'PENDING'];
+import PaymentStatusSelection from '../common/PaymentStatusSelection';
 
 export type PaymentType = {
   status: string;
@@ -27,23 +26,13 @@ const PaymentInfo: React.FC<ComponentProps> = ({ values, handleBlur, handleChang
         Payment Information
       </Typography>
       <Stack direction='row' gap='1em' flexWrap='wrap'>
-        <FormControl sx={{ width: '250px' }}>
-          <InputLabel id='payment-status-select-label'>Payment Status</InputLabel>
-          <Select
-            labelId='payment-status-select-label'
-            id='payment-status-select'
-            value={values.payment.status}
-            label='Payment Status'
-            onChange={handleChange}
-            onBlur={handleBlur}
-            name='payment.status'>
-            {PAYMENT_STATUS.map((status) => (
-              <MenuItem value={status} key={`payment-status-option-${status}`}>
-                {status}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <PaymentStatusSelection
+          name='payment.status'
+          value={values.payment.status || ''}
+          handleChange={handleChange}
+          handleBlur={handleBlur}
+        />
+
         <TextField
           label='Payment Mode'
           name='payment.mode'

@@ -1,7 +1,15 @@
 import { Box, Pagination, Typography } from '@mui/material';
 import React from 'react';
+import { IPageMeta } from '../../../../api/types/common';
 
-const CustomPagination = (props: any) => {
+type ComponentProps = {
+  page: number;
+  size: number;
+  paginationInfo: IPageMeta;
+  onPageChange: (val: number) => void;
+};
+
+const CustomPagination: React.FC<ComponentProps> = ({ page, size, paginationInfo, onPageChange }) => {
   return (
     <Box
       display='flex'
@@ -11,17 +19,17 @@ const CustomPagination = (props: any) => {
       p={2}
       borderTop='1px solid #eee'>
       <Typography sx={{ fontSize: { md: '16px', xs: '14px' }, fontWeight: { md: '700', xs: '500' } }}>
-        Showing page {props.page} of {props?.paginationInfo?.totalPages} pages ({props.size} items per page)
+        Showing page {page + 1} of {paginationInfo.totalPages} pages ({size} items per page)
       </Typography>
       <Pagination
-        count={props?.paginationInfo?.totalPages}
-        page={props?.page}
+        count={paginationInfo?.totalPages}
+        page={page + 1}
         size='small'
         onChange={(_event, value) => {
-          props.onPageChange(value);
+          onPageChange(value - 1);
         }}
-        hideNextButton={props?.paginationInfo?.isLastPage}
-        hidePrevButton={props?.paginationInfo?.isFirstPage}
+        hideNextButton={!paginationInfo.nextPage}
+        hidePrevButton={page === 0}
         disabled={false}
       />
     </Box>

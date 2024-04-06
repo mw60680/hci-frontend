@@ -3,6 +3,7 @@ import { FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography
 import { DateField, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { FormikHandlers } from 'formik';
+import CollectionTypeSelection from '../common/CollectionTypeSelection';
 
 export type PatientInfo = {
   name: string;
@@ -26,19 +27,11 @@ const BasicInfo: React.FC<ComponentProps> = ({ values, handleBlur, handleChange,
   return (
     <>
       <Stack direction='row' flexWrap='wrap'>
-        <FormControl>
-          <InputLabel id='collection-type-select-label'>Collection Type</InputLabel>
-          <Select
-            labelId='collection-type-select-label'
-            id='collection-type-select'
-            value={values.collectionType}
-            label='Collection Type'
-            onChange={handleChange}
-            name='collectionType'>
-            <MenuItem value='HOME_COLLECTION'>Home Collection</MenuItem>
-            <MenuItem value='CAMP'>Camp</MenuItem>
-          </Select>
-        </FormControl>
+        <CollectionTypeSelection
+          name='collectionType'
+          value={values.collectionType || ''}
+          handleChange={handleChange}
+        />
       </Stack>
       <Typography fontWeight='700' fontSize='1.25rem'>
         Patient Information

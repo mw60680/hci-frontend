@@ -1,3 +1,6 @@
+import { ORDER_COLLECTION_TYPE, ORDER_STATUS, PAYMENT_STATUS } from '../../../utils/constants';
+import { BaseListRequest } from './base';
+
 export interface IOrderPatientObject {
   name: string;
   gender: string;
@@ -50,4 +53,16 @@ export interface ICreateOrderRequest {
   clientId?: string;
   homeCollection?: Partial<IOrderHomeCollectionObject>;
   camp?: Partial<IOrderCampObject>;
+}
+
+export interface IOrdersListRequest extends BaseListRequest {
+  collectionType: ORDER_COLLECTION_TYPE;
+  clientId: string;
+  patientName: string;
+  patientMobile: string;
+  patientEmail: string;
+  paymentStatus: PAYMENT_STATUS;
+  orderStatus: ORDER_STATUS;
+  homeCollectionCity: string;
+  campName: string;
 }

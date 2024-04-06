@@ -1,11 +1,11 @@
 import apiSlice from '..';
 import { BASE_URL } from '../constants';
-import { ICreateOrderRequest } from '../types/request/orders';
+import { ICreateOrderRequest, IOrdersListRequest } from '../types/request/orders';
 import { IOrderDetailsResponse, IOrdersListResponse } from '../types/response/orders';
 
 const ordersApis = apiSlice.injectEndpoints({
   endpoints: (build) => ({
-    ordersList: build.query<IOrdersListResponse, { params?: any }>({
+    ordersList: build.query<IOrdersListResponse, { params?: Partial<IOrdersListRequest> }>({
       query: (payload) => ({
         url: `${BASE_URL}/orders`,
         params: payload.params
