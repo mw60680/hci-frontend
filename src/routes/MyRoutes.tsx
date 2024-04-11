@@ -75,7 +75,7 @@ const routesMap = [
     ]
   },
   {
-    path: '/vectors',
+    path: '/vendors',
     element: <Layout />,
     children: [
       {

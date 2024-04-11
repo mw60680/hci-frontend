@@ -3,6 +3,7 @@ import { BASE_URL } from '../constants';
 
 export interface ResponseUsersDetails {
   id: number;
+  uuid: string;
   name: string;
   mobile: number;
   email: string;
@@ -29,7 +30,7 @@ const userApis = apiSlice.injectEndpoints({
         url: `${BASE_URL}/users/token/details`
       })
     }),
-    getUsers: builder.query<ResponseUsersList, { params: { page: number; size: number } }>({
+    getUsers: builder.query<ResponseUsersList, { params: { page: number; size: number; name?: string } }>({
       query: ({ params }) => ({
         url: `${BASE_URL}/users`,
         params
@@ -61,6 +62,7 @@ export const {
   useGetUserDetailsQuery,
   useLazyGetUserDetailsQuery,
   useGetUsersQuery,
+  useLazyGetUsersQuery,
   useAddUsersMutation,
   useGetUserByIdQuery,
   useUpdateUserMutation

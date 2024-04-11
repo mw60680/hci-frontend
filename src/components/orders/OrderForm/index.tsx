@@ -33,6 +33,7 @@ const OrderForm: React.FC<ComponentProps> = ({ values, handleChange, handleBlur,
           values={values.homeCollection || {}}
           handleBlur={handleBlur}
           handleChange={handleChange}
+          setFieldValue={setFieldValue}
         />
       )}
     </Stack>

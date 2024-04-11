@@ -61,18 +61,18 @@ const _nav = [
     ]
   },
   {
-    text: 'Vectors',
+    text: 'Vendors',
     icon: ContactEmergencyIcon,
     children: [
       {
-        text: 'Vectors',
+        text: 'Vendors',
         icon: ContactEmergencyIcon,
-        link: '/vectors'
+        link: '/vendors'
       },
       {
-        text: 'Add Vectors',
+        text: 'Add Vendor',
         icon: ContactEmergencyIcon,
-        link: '/vectors/add'
+        link: '/vendors/add'
       }
     ]
   }
