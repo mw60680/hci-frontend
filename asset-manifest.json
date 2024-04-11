@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/hci-frontend/static/css/main.f4a55e94.css",
-    "main.js": "/hci-frontend/static/js/main.a3569dc9.js",
+    "main.js": "/hci-frontend/static/js/main.229a46f7.js",
     "static/js/787.087f741e.chunk.js": "/hci-frontend/static/js/787.087f741e.chunk.js",
     "index.html": "/hci-frontend/index.html",
     "main.f4a55e94.css.map": "/hci-frontend/static/css/main.f4a55e94.css.map",
-    "main.a3569dc9.js.map": "/hci-frontend/static/js/main.a3569dc9.js.map",
+    "main.229a46f7.js.map": "/hci-frontend/static/js/main.229a46f7.js.map",
     "787.087f741e.chunk.js.map": "/hci-frontend/static/js/787.087f741e.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.f4a55e94.css",
-    "static/js/main.a3569dc9.js"
+    "static/js/main.229a46f7.js"
   ]
 }
