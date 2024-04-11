@@ -1,11 +1,12 @@
 import React from 'react';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Dialog, DialogContent, Typography } from '@mui/material';
 import { useState } from 'react';
 import { DataGrid, GridColumnHeaderParams, GridColumns, GridRowParams } from '@mui/x-data-grid';
 import { useGetUsersQuery } from '../../api/user';
 import { useNavigate } from 'react-router-dom';
 import ContentWrapper from '../../components/ContentWrapper';
 import CustomPagination from '../../components/global/Table/utils/CustomPagination';
+import UpdatePasswordForm from '../../components/users/UpdatePasswordForm';
 
 const columns: GridColumns = [
   {
@@ -100,6 +101,13 @@ const columns: GridColumns = [
 const UsersList: React.FC = () => {
   const navigate = useNavigate();
 
+  const [updatePassword, setUpdatePassword] = useState({
+    open: false,
+    userName: '',
+    email: '',
+    mobile: '',
+    uuid: ''
+  });
   const [paginationParams, setPaginationParams] = useState({ page: 0, size: 10 });
 
   const { data: userDetails, isLoading, isError, isFetching } = useGetUsersQuery({ params: paginationParams });
@@ -117,7 +125,7 @@ const UsersList: React.FC = () => {
       field: 'actions',
       type: 'actions',
       headerName: 'Actions',
-      width: 100,
+      width: 200,
       cellClassName: 'actions',
       getActions: (params: GridRowParams) => [
         <Button
@@ -127,6 +135,19 @@ const UsersList: React.FC = () => {
             navigate(`${uuid}`);
           }}>
           Edit
+        </Button>,
+        <Button
+          key='action'
+          onClick={() => {
+            setUpdatePassword({
+              open: true,
+              userName: params.row.name,
+              email: params.row.email,
+              mobile: params.row.mobile,
+              uuid: params.row.uuid
+            });
+          }}>
+          Set Password
         </Button>
       ]
     }
@@ -139,34 +160,47 @@ const UsersList: React.FC = () => {
   };
 
   return (
-    <ContentWrapper>
-      <Box sx={{ width: '100%', minHeight: '500px' }}>
-        <DataGrid
-          columns={updatedColumns}
-          paginationMode='server'
-          rows={userDetails?.data || []}
-          filterMode='server'
-          loading={isFetching}
-          rowSpacingType='border'
-          pagination
-          autoPageSize
-          getRowId={(row) => row.uuid}
-          autoHeight
-          disableColumnFilter
-          components={{
-            Footer: (props) => (
-              <CustomPagination
-                onPageChange={onPageChange}
-                paginationInfo={paginationInfo}
-                {...paginationParams}
-                {...props}
-              />
-            )
-          }}
-          sx={{ minHeight: '500px', overflowY: 'auto' }}
-        />
-      </Box>
-    </ContentWrapper>
+    <>
+      <ContentWrapper>
+        <Box sx={{ width: '100%', minHeight: '500px' }}>
+          <DataGrid
+            columns={updatedColumns}
+            paginationMode='server'
+            rows={userDetails?.data || []}
+            filterMode='server'
+            loading={isFetching}
+            rowSpacingType='border'
+            pagination
+            autoPageSize
+            getRowId={(row) => row.uuid}
+            autoHeight
+            disableColumnFilter
+            components={{
+              Footer: (props) => (
+                <CustomPagination
+                  onPageChange={onPageChange}
+                  paginationInfo={paginationInfo}
+                  {...paginationParams}
+                  {...props}
+                />
+              )
+            }}
+            sx={{ minHeight: '500px', overflowY: 'auto' }}
+          />
+        </Box>
+      </ContentWrapper>
+      <Dialog open={updatePassword.open}>
+        <DialogContent>
+          <UpdatePasswordForm
+            email={updatePassword.email}
+            mobile={updatePassword.mobile}
+            userName={updatePassword.userName}
+            uuid={updatePassword.uuid}
+            handleSuccess={() => setUpdatePassword({ open: false, userName: '', email: '', mobile: '', uuid: '' })}
+          />
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 

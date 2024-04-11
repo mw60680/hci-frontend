@@ -13,7 +13,7 @@ import {
   Typography
 } from '@mui/material';
 import * as Yup from 'yup';
-import { Form, Formik } from 'formik';
+import { Form, Formik, FormikHelpers } from 'formik';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../../api/login';
@@ -27,7 +27,7 @@ const Login: React.FC = () => {
   const dispatch = useDispatch();
   const [accountNotFound, setAccountNotFound] = useState(false);
 
-  const [signIn, { isSuccess, isLoading }] = useLoginMutation();
+  const [signIn] = useLoginMutation();
 
   const validationSchema = Yup.object().shape({
     type: Yup.string()
@@ -35,21 +35,23 @@ const Login: React.FC = () => {
       .required('Please select an option'),
     mobile: Yup.string().matches(/^[6-9]\d{9}$/, 'Please enter a valid mobile number'),
     email: Yup.string().email('Please enter a valid email address'),
-    password: Yup.string().required('Password is required').min(8, 'Password must be at least 8 characters')
+    password: Yup.string().required('Password is required')
   });
 
-  const handleSubmit = async (values: any, resetForm: any) => {
+  const handleSubmit = async (values: any, helpers: FormikHelpers<any>) => {
     try {
+      helpers.setSubmitting(true);
       const payload = {
         type: values.type,
         password: values.password,
         ...(values.type === LOGIN_TYPE.EMAIL ? { email: values.email } : { mobile: values.mobile })
       };
+
       const apiRes = await signIn(payload);
+
       if ('error' in apiRes) {
         throw apiRes.error;
       }
-      console.log('apiRes', apiRes);
 
       dispatch(
         setAuthenticated({
@@ -63,12 +65,11 @@ const Login: React.FC = () => {
       localStorage.setItem('token', 'Bearer ' + apiRes?.data.auth.token);
       localStorage.setItem('refresh-token', apiRes?.data.auth.refreshToken);
 
-      resetForm();
-      console.log('before');
       navigate('/');
     } catch (error) {
       setAccountNotFound(true);
-      console.error('Unexpected error during sign-in:', error);
+    } finally {
+      helpers.setSubmitting(false);
     }
   };
 
@@ -100,14 +101,9 @@ const Login: React.FC = () => {
             password: ''
           }}
           validationSchema={validationSchema}
-          onSubmit={async (values, { resetForm }) => {
-            // console.log(values);
-            // // await sleep(500);
-            // await handleSubmit(values);
-            // resetForm();
-          }}>
-          {({ errors, touched, handleChange, handleBlur, values, isSubmitting, resetForm }) => (
-            <Form>
+          onSubmit={handleSubmit}>
+          {({ errors, touched, handleChange, handleBlur, values, isSubmitting, handleSubmit }) => (
+            <Box component='form' onSubmit={handleSubmit}>
               <Stack spacing={2} sx={{ alignItems: 'center' }}>
                 <FormControl>
                   <RadioGroup
@@ -165,29 +161,12 @@ const Login: React.FC = () => {
                   helperText={!!(touched.password && errors.password)}
                   sx={{ width: '40ch' }}
                   type={showPassword ? 'text' : 'password'}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position='end'>
-                        <IconButton
-                          aria-label='toggle password visibility'
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                          edge='end'>
-                          {showPassword ? <Visibility /> : <VisibilityOff />}
-                        </IconButton>
-                      </InputAdornment>
-                    )
-                  }}
                 />
-                <Button
-                  variant='contained'
-                  sx={{ width: '40ch' }}
-                  onClick={() => handleSubmit(values, resetForm)}
-                  disabled={isSubmitting}>
+                <Button variant='contained' sx={{ width: '40ch' }} type='submit' disabled={isSubmitting}>
                   Sign In
                 </Button>
               </Stack>
-            </Form>
+            </Box>
           )}
         </Formik>
       </Stack>

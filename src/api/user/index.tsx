@@ -54,6 +54,16 @@ const userApis = apiSlice.injectEndpoints({
         body: payload,
         method: 'PUT'
       })
+    }),
+    updatePassword: builder.mutation<
+      void,
+      { uuid: string; body: { uuid: string; password: string; confirmPassword: string } }
+    >({
+      query: ({ uuid, body }) => ({
+        url: `${BASE_URL}/users/${uuid}/update-password`,
+        body: body,
+        method: 'PUT'
+      })
     })
   })
 });
@@ -65,6 +75,7 @@ export const {
   useLazyGetUsersQuery,
   useAddUsersMutation,
   useGetUserByIdQuery,
-  useUpdateUserMutation
+  useUpdateUserMutation,
+  useUpdatePasswordMutation
 } = userApis;
 export default userApis.reducer;

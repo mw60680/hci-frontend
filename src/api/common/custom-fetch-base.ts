@@ -28,6 +28,10 @@ const customFetchBase = async (args: any, api: any, extraOptions: any) => {
     // Error handling
   }
 
+  if (responseStatus === 201) {
+    return {};
+  }
+
   return result;
 };
 
