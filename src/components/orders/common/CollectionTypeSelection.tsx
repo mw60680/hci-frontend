@@ -20,7 +20,7 @@ const CollectionTypeSelection: React.FC<ComponentProps> = ({ value, name, handle
         onChange={handleChange}
         name={name}
         sx={{
-          width: '150px'
+          width: '250px'
         }}>
         <MenuItem value='HOME_COLLECTION'>Home Collection</MenuItem>
         <MenuItem value='CAMP'>Camp</MenuItem>

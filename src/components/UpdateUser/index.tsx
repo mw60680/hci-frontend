@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetUserByIdQuery, useUpdateUserMutation } from '../../api/user';
-import { Box, Button, MenuItem, TextField, Typography } from '@mui/material';
+import { Box, Button, MenuItem, Stack, TextField, Typography } from '@mui/material';
 import ContentWrapper from '../ContentWrapper';
-import { Formik, Form } from 'formik';
+import { Formik, Form, FormikState, FormikHelpers } from 'formik';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import * as Yup from 'yup';
-import ModeEditIcon from '@mui/icons-material/ModeEdit';
 
 const validationSchema = Yup.object({
   name: Yup.string().required('Name is required'),
@@ -21,16 +20,10 @@ const validationSchema = Yup.object({
 
 const UpdateUser: React.FC = () => {
   const { uuid } = useParams<{ uuid: string }>();
-  const { data: user, isLoading, isError,refetch } = useGetUserByIdQuery(uuid || '');
-  const [editableField, setEditableField] = useState('');
+
+  const { data: user, isLoading, isError } = useGetUserByIdQuery(uuid || '');
+
   const [updateUserMutation] = useUpdateUserMutation();
-
-  console.log(user);
-  const handleEditClick = (fieldName: string) => {
-    setEditableField(fieldName);
-  };
-
-  const isSubmitDisabled = !editableField ;
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -44,49 +37,72 @@ const UpdateUser: React.FC = () => {
     return <p>No user details found</p>;
   }
 
-  const handleSubmit = async (values: any) => {
+  const initialValues = {
+    name: user.data.name,
+    email: user.data.email,
+    mobile: user.data.mobile,
+    city: user.data.city,
+    dob: user.data.dob,
+    userType: user.data.user_type,
+    active: true,
+    employmentType: user.data.employment_type,
+    isEditable: false
+  };
+
+  const handleSubmit = async (
+    values: FormikState<typeof initialValues>['values'],
+    helpers: FormikHelpers<typeof initialValues>
+  ) => {
     try {
+      helpers.setSubmitting(true);
       const payload = { ...values, dob: new Date(values.dob).toISOString() };
-      const apiRes = await updateUserMutation({uuid:uuid||'',payload});
+
+      const apiRes = await updateUserMutation({ uuid: uuid || '', payload });
 
       if ('error' in apiRes) {
         throw apiRes.error;
       }
-      console.log(apiRes);
+
+      helpers.setFieldValue('isEditable', false);
     } catch (error) {
       console.log(error);
+    } finally {
+      helpers.setSubmitting(false);
     }
   };
 
   return (
     <ContentWrapper>
       <Formik
-        initialValues={{
-          name: user.data.name,
-          email: user.data.email,
-          mobile: user.data.mobile,
-          city: user.data.city,
-          dob: user.data.dob,
-          userType: user.data.user_type,
-          active: true,
-          employmentType: user.data.employment_type
-        }}
+        initialValues={initialValues}
+        enableReinitialize
         validationSchema={validationSchema}
-        onSubmit={(values, { setSubmitting }) => {
-          handleSubmit(values);
-          window.location.reload();
-        }}
-      >
-        {({ errors, touched, handleChange, values, setFieldValue }) => (
+        onSubmit={handleSubmit}>
+        {({ errors, touched, values, isSubmitting, handleChange, setFieldValue, handleSubmit, resetForm }) => (
           <Box maxWidth='400px' margin='auto'>
-            <Form>
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  rowGap: '18px'
-                }}
-              >
+            <Form onSubmit={handleSubmit}>
+              <Stack gap='1em'>
+                <Stack direction='row' justifyContent='flex-end'>
+                  {values.isEditable ? (
+                    <Stack direction='row' gap='1em'>
+                      <Button type='submit' variant='outlined' color='primary' onClick={() => resetForm()}>
+                        Cancel
+                      </Button>
+                      <Button type='submit' variant='contained' color='primary' disabled={isSubmitting}>
+                        {isSubmitting ? 'Saving...' : 'Save'}
+                      </Button>
+                    </Stack>
+                  ) : (
+                    <Button
+                      type='submit'
+                      variant='contained'
+                      color='primary'
+                      onClick={() => setFieldValue('isEditable', true)}>
+                      Edit
+                    </Button>
+                  )}
+                </Stack>
+
                 <TextField
                   fullWidth
                   variant='outlined'
@@ -94,18 +110,10 @@ const UpdateUser: React.FC = () => {
                   name='name'
                   label='Name'
                   value={values.name}
-                  onChange={(e) => {
-                    handleChange(e);
-                  }}
+                  onChange={handleChange}
                   error={touched.name && Boolean(errors.name)}
                   InputProps={{
-                    readOnly: editableField !== 'name',
-                    endAdornment: (
-                      <ModeEditIcon
-                        onClick={() => handleEditClick('name')}
-                        style={{ cursor: 'pointer' }}
-                      />
-                    )
+                    readOnly: !values.isEditable
                   }}
                 />
                 <TextField
@@ -114,19 +122,11 @@ const UpdateUser: React.FC = () => {
                   id='email'
                   name='email'
                   label='Email'
-                  onChange={(e) => {
-                    handleChange(e);
-                  }}
+                  onChange={handleChange}
                   value={values.email}
                   error={touched.email && Boolean(errors.email)}
                   InputProps={{
-                    readOnly: editableField !== 'email',
-                    endAdornment: (
-                      <ModeEditIcon
-                        onClick={() => handleEditClick('email')}
-                        style={{ cursor: 'pointer' }}
-                      />
-                    )
+                    readOnly: !values.isEditable
                   }}
                 />
                 <TextField
@@ -136,19 +136,11 @@ const UpdateUser: React.FC = () => {
                   name='mobile'
                   label='Mobile'
                   type='number'
-                  onChange={(e) => {
-                    handleChange(e);
-                  }}
+                  onChange={handleChange}
                   value={values.mobile}
                   error={touched.mobile && Boolean(errors.mobile)}
                   InputProps={{
-                    readOnly: editableField !== 'mobile',
-                    endAdornment: (
-                      <ModeEditIcon
-                        onClick={() => handleEditClick('mobile')}
-                        style={{ cursor: 'pointer' }}
-                      />
-                    )
+                    readOnly: !values.isEditable
                   }}
                 />
                 <TextField
@@ -158,13 +150,12 @@ const UpdateUser: React.FC = () => {
                   name='employmentType'
                   label='Employment Type'
                   select
-                  onChange={(e) => {
-                    handleChange(e);
-                    handleEditClick('employmentType');
+                  onChange={handleChange}
+                  InputProps={{
+                    readOnly: !values.isEditable
                   }}
                   value={values.employmentType}
-                  error={touched.employmentType && Boolean(errors.employmentType)}
-                >
+                  error={touched.employmentType && Boolean(errors.employmentType)}>
                   {[
                     { id: 'FULL_TIME', display: 'Full Time' },
                     { id: 'PART_TIME', display: 'Part Time' }
@@ -183,13 +174,9 @@ const UpdateUser: React.FC = () => {
                   name='userType'
                   label='User Type'
                   select
-                  onChange={(e) => {
-                    handleChange(e);
-                    handleEditClick('usertype');
-                  }}
+                  onChange={handleChange}
                   value={values.userType}
-                  error={touched.userType && Boolean(errors.userType)}
-                >
+                  error={touched.userType && Boolean(errors.userType)}>
                   {[
                     { id: 'admin', display: 'Admin' },
                     { id: 'user', display: 'User' }
@@ -208,20 +195,10 @@ const UpdateUser: React.FC = () => {
                   name='city'
                   label='City'
                   value={values.city}
-                  onChange={(e) => {
-                    handleChange(e);
-                    handleEditClick('city');
-                  }}
+                  onChange={handleChange}
                   error={touched.city && Boolean(errors.city)}
-
                   InputProps={{
-                    readOnly: editableField !== 'city',
-                    endAdornment: (
-                      <ModeEditIcon
-                        onClick={() => handleEditClick('city')}
-                        style={{ cursor: 'pointer' }}
-                      />
-                    )
+                    readOnly: !values.isEditable
                   }}
                 />
 
@@ -229,25 +206,12 @@ const UpdateUser: React.FC = () => {
                   <DatePicker
                     label='DOB'
                     value={dayjs(values.dob)}
-                    onChange={(newValue: any) => {
+                    onChange={(newValue) => {
                       setFieldValue('dob', newValue);
-                      handleEditClick('dob');
                     }}
                   />
                 </LocalizationProvider>
-
-                <Box mt={2}>
-                  <Button
-                    type='submit'
-                    variant='contained'
-                    color='primary'
-                    sx={{ width: '100%' }}
-                    disabled={isLoading || isSubmitDisabled}
-                  >
-                    {isLoading ? 'Submitting' : 'Submit'}
-                  </Button>
-                </Box>
-              </Box>
+              </Stack>
             </Form>
           </Box>
         )}
