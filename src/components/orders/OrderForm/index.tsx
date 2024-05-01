@@ -1,8 +1,8 @@
 import React from 'react';
-import { Stack } from '@mui/material';
+import { Stack, TextField, Typography } from '@mui/material';
 import { FormikHandlers, FormikState } from 'formik';
 import HomeCollectionDetails, { HomeCollectionFields } from './HomeCollectionDetails';
-import { CampFields } from './CampCollectionDetails';
+import CampCollectionDetails, { CampFields } from './CampCollectionDetails';
 import BasicInfo, { PatientInfo } from './BasicInfo';
 import PaymentInfo, { PaymentType } from './PaymentInfo';
 
@@ -12,6 +12,8 @@ export type OrderFormFields = {
   payment: Partial<PaymentType>;
   homeCollection?: Partial<HomeCollectionFields>;
   camp?: Partial<CampFields>;
+  remarks?: string;
+  oldRemarks?: string[];
 };
 
 type ComponentProps = {
@@ -36,6 +38,33 @@ const OrderForm: React.FC<ComponentProps> = ({ values, handleChange, handleBlur,
           setFieldValue={setFieldValue}
         />
       )}
+
+      {values.collectionType === 'CAMP' && (
+        <CampCollectionDetails
+          values={values.camp || {}}
+          handleBlur={handleBlur}
+          handleChange={handleChange}
+          setFieldValue={setFieldValue}
+        />
+      )}
+
+      <TextField
+        name='remarks'
+        value={values.remarks}
+        placeholder='Remarks'
+        label='Remarks'
+        onChange={handleChange}
+        onBlur={handleBlur}
+      />
+
+      {values?.oldRemarks?.length ? (
+        <Stack gap='0.5em' padding='1em' border='1px solid #333' borderRadius='1rem' bgcolor='#ddd'>
+          <Typography fontWeight={700} fontSize='0.75rem'>
+            Old Remarks
+          </Typography>
+          {values?.oldRemarks.map((remark, index) => <Typography key={`order-remark-${index}`}>{remark}</Typography>)}
+        </Stack>
+      ) : null}
     </Stack>
   );
 };

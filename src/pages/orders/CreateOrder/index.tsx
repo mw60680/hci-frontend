@@ -50,7 +50,7 @@ const CreateOrder = () => {
       if (values.patient) {
         body.patient = {
           name: values.patient.name,
-          dob: values.patient.dob ? moment(new Date(values.patient.dob)).format('YYYY-MM-DD') : '',
+          dob: values.patient.dob ? moment(new Date(values.patient.dob?.toString())).format('YYYY-MM-DD') : '',
           email: values.patient.email,
           gender: values.patient.gender,
           mobile: values.patient.mobile
@@ -90,7 +90,7 @@ const CreateOrder = () => {
         const camp: Partial<ICreateOrderRequest['camp']> = {
           address: values.camp.address,
           name: values.camp.name,
-          time: values.camp.time
+          time: values.camp.time?.toString()
         };
 
         if ('manager' in values.camp) {

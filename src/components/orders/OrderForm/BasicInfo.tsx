@@ -4,12 +4,13 @@ import { DateField, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { FormikHandlers } from 'formik';
 import CollectionTypeSelection from '../common/CollectionTypeSelection';
+import { Dayjs } from 'dayjs';
 
 export type PatientInfo = {
   name: string;
   mobile: string;
   email: string;
-  dob: string | Date;
+  dob: string | Date | Dayjs;
   gender: string;
 };
 

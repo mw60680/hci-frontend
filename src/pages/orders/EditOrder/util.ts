@@ -1,6 +1,7 @@
 import moment from 'moment';
 import { IOrderDetailsResponse } from '../../../api/types/response/orders';
 import { OrderFormFields } from '../../../components/orders/OrderForm';
+import dayjs from 'dayjs';
 
 export const initialValues: OrderFormFields = {
   collectionType: 'HOME_COLLECTION',
@@ -27,7 +28,7 @@ export const mapOrderDetailResponseToForm = (response: IOrderDetailsResponse) =>
       email: response.data.patient.email,
       gender: response.data.patient.gender,
       mobile: response.data.patient.mobile,
-      dob: response.data.patient.dob ? moment(new Date(response.data.patient.dob)).format('DD-MM-YYYY') : ''
+      dob: response.data.patient.dob ? dayjs(response.data.patient.dob) : ''
     };
   }
 
@@ -58,6 +59,25 @@ export const mapOrderDetailResponseToForm = (response: IOrderDetailsResponse) =>
       tubeType: response.data.home_collection.tube_type,
       barCode: response.data.home_collection.barcode
     };
+  }
+
+  if ('camp' in response.data) {
+    data.camp = {
+      address: response.data.camp.address,
+      manager: {
+        mobile: response.data?.camp?.manager?.mobile,
+        name: response.data?.camp?.manager?.name
+      },
+      name: response.data.camp.name
+    };
+
+    if (response.data.camp.time) {
+      data.camp.time = dayjs(response.data.camp.time);
+    }
+  }
+
+  if ('remarks' in response.data) {
+    data.oldRemarks = response.data.remarks || [];
   }
 
   console.debug(data);
