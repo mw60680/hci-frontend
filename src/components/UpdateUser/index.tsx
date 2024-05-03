@@ -1,7 +1,19 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetUserByIdQuery, useUpdateUserMutation } from '../../api/user';
-import { Box, Button, MenuItem, Stack, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  MenuItem,
+  Radio,
+  RadioGroup,
+  Stack,
+  TextField,
+  Typography
+} from '@mui/material';
 import ContentWrapper from '../ContentWrapper';
 import { Formik, Form, FormikState, FormikHelpers } from 'formik';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
@@ -44,7 +56,7 @@ const UpdateUser: React.FC = () => {
     city: user.data.city,
     dob: user.data.dob,
     userType: user.data.user_type,
-    active: true,
+    active: user.data.active ? 'active' : 'inactive',
     employmentType: user.data.employment_type,
     isEditable: false
   };
@@ -55,7 +67,7 @@ const UpdateUser: React.FC = () => {
   ) => {
     try {
       helpers.setSubmitting(true);
-      const payload = { ...values, dob: new Date(values.dob).toISOString() };
+      const payload = { ...values, dob: new Date(values.dob).toISOString(), active: values.active === 'active' };
 
       const apiRes = await updateUserMutation({ uuid: uuid || '', payload });
 
@@ -143,6 +155,26 @@ const UpdateUser: React.FC = () => {
                     readOnly: !values.isEditable
                   }}
                 />
+                <FormControl>
+                  <FormLabel id='user-active-group-label'>Active?</FormLabel>
+                  <RadioGroup
+                    name='user-active-group'
+                    value={values.active}
+                    row
+                    onChange={(e, val) => setFieldValue('active', val)}>
+                    <FormControlLabel value='active' control={<Radio />} label='Active' />
+                    <FormControlLabel value='inactive' control={<Radio />} label='InActive' />
+                  </RadioGroup>
+                </FormControl>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    label='DOB'
+                    value={dayjs(values.dob)}
+                    onChange={(newValue) => {
+                      setFieldValue('dob', newValue);
+                    }}
+                  />
+                </LocalizationProvider>
                 <TextField
                   fullWidth
                   variant='outlined'
@@ -201,16 +233,6 @@ const UpdateUser: React.FC = () => {
                     readOnly: !values.isEditable
                   }}
                 />
-
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    label='DOB'
-                    value={dayjs(values.dob)}
-                    onChange={(newValue) => {
-                      setFieldValue('dob', newValue);
-                    }}
-                  />
-                </LocalizationProvider>
               </Stack>
             </Form>
           </Box>
